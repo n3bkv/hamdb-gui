@@ -1,3 +1,6 @@
+<img width="1314" height="1348" alt="image" src="https://github.com/user-attachments/assets/8be4bcab-3a79-4018-acbb-c5398f210295" />
+
+
 # HamDB GUI V1.0
 
 A modern web interface for K3NG's HamDB amateur radio callsign database lookup tool. Features a responsive design, real-time, local FCC database lookups, and comprehensive search capabilities perfect for Field Day, contests, and daily amateur radio operations.
@@ -287,7 +290,7 @@ sudo -u hamdb bash -c "cd /opt/hamdb && HOME=/opt/hamdb /usr/local/bin/hamdb pop
    LimitNOFILE=65536
    ```
 
-2. **Database Indexing**:
+2. **Database Indexing (First lookups will be slow until indexing is complete)**:
    The database is pre-optimized with indexes on callsign, ZIP code, and name fields.
 
 3. **Nginx Caching**:
