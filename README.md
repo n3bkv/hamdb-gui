@@ -43,13 +43,13 @@ A modern web interface for K3NG's HamDB amateur radio callsign database lookup t
 
 ### One-Line Installation
 ```bash
-curl -fsSL https://raw.githubusercontent.com/n3bkv/hamdb-gui/Ham_DB_Gui.sh | bash
+curl -fsSL https://raw.githubusercontent.com/n3bkv/hamdb-gui/main/Ham_DB_Gui.sh | bash
 ```
 
 ### Manual Installation
 ```bash
 # Download the installer
-wget https://raw.githubusercontent.com/n3bkv/hamdb-gui/Ham_DB_Gui.sh
+wget https://raw.githubusercontent.com/n3bkv/hamdb-gui/main/Ham_DB_Gui.sh
 
 # Make executable
 chmod +x Ham_DB_Gui.sh
