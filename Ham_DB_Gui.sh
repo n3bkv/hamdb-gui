@@ -141,9 +141,8 @@ setup_database() {
     print_status "Cleaning up any previous installation..."
     sudo mysql << 'MYSQL_CLEANUP'
 DROP DATABASE IF EXISTS fcc_amateur;
-#DROP USER IF EXISTS 'hamdbuser'@'localhost';
+DROP USER IF EXISTS 'user'@'localhost';
 #DROP USER IF EXISTS 'hamdb'@'localhost';
-#DROP USER IF EXISTS 'n3bkv'@'localhost';
 FLUSH PRIVILEGES;
 MYSQL_CLEANUP
     
