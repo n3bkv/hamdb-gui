@@ -400,14 +400,11 @@ sudo systemctl restart hamdb-gui
 4. Update documentation as needed
 5. Submit pull request with clear description
 
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## Acknowledgments
 
 - **K3NG (Anthony Good)** - Creator of the original HamDB script and database tools
-- **The Modern Ham KN4MKB (Billy D Penley) ** - for his setup blog post
+- **The Modern Ham KN4MKB (Billy D Penley)** - for his setup blog post
 - **FCC** - For providing public access to amateur radio license data
 - **Amateur Radio Community** - For testing, feedback, and support
 
@@ -418,16 +415,12 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - **Amateur Radio Forums**: QRZ.com, eHam.net discussions
 - **Social Media**: #HamRadio hashtags on Twitter
 
-### Professional Support
-For commercial deployments or custom installations, contact the maintainers.
-
 ## Related Projects
 
 - **[K3NG HamDB](https://github.com/k3ng/hamdb)** - Original CLI database tool
-- **[Modern Ham Blog Article] (https://themodernham.com/host-your-own-fcc-ham-radio-database-for-offline-use-with-hamdb/)
+- **[Modern Ham Blog Article](https://themodernham.com/host-your-own-fcc-ham-radio-database-for-offline-use-with-hamdb/)** - K3NG setup instructions
 - **[HamLib](https://hamlib.github.io/)** - Ham radio control libraries
-- **[WSJT-X](https://physics.princeton.edu/pulsar/k1jt/)** - Weak signal digital modes
-- **[Fldigi](http://www.w1hkj.com/fldigi/)** - Digital mode software
+
 
 ## Changelog
 
