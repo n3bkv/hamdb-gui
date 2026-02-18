@@ -356,6 +356,98 @@ create_web_interface() {
     <title>HamDB GUI - Amateur Radio Callsign Lookup</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
+		#result-output {
+			font-family: 'Segoe UI', system-ui, sans-serif;
+			font-size: 14px;
+			background: #f8fafc;
+			border: 1px solid #e2e8f0;
+			border-radius: 8px;
+			padding: 16px;
+			min-height: 80px;
+			color: #1e293b;
+			overflow-x: auto;
+		}
+		/* Styled result table */
+		.result-table {
+			width: 100%;
+			border-collapse: collapse;
+			margin-top: 4px;
+		}
+		.result-table thead tr {
+			background: linear-gradient(135deg, #6c63b6, #8b7fd4);
+			color: #ffffff;
+		}
+		.result-table thead th {
+			padding: 7px 10px;
+			text-align: left;
+			font-size: 10px;
+			font-weight: 700;
+			letter-spacing: 0.06em;
+			text-transform: uppercase;
+			border: none;
+			white-space: nowrap;
+		}
+		.result-table tbody tr {
+			border-bottom: 1px solid #e2e8f0;
+			transition: background 0.15s;
+		}
+
+		.result-table tbody tr:hover {
+			background: #f0eeff;
+		}
+		.result-table tbody td {
+			padding: 7px 10px;
+			font-size: 11px;
+			color: #334155;
+			white-space: nowrap;
+		}
+		/* Highlight the callsign cell */
+		.result-table td.callsign-cell {
+			font-weight: 700;
+			color: #6c63b6;
+			font-size: 12px;
+			letter-spacing: 0.04em;
+		}
+		.result-meta .badge {
+			background: #ede9ff;
+			color: #6c63b6;
+			border-radius: 999px;
+			padding: 2px 10px;
+			font-weight: 600;
+			font-size: 11px;
+		}
+		/* Row count badge */
+		.result-meta {
+			display: flex;
+			align-items: center;
+			gap: 10px;
+			margin-top: 12px;
+			font-size: 12px;
+			color: #64748b;
+		}
+		.result-meta .badge {
+			background: #dbeafe;
+			color: #1e40af;
+			border-radius: 999px;
+			padding: 2px 10px;
+			font-weight: 600;
+			font-size: 11px;
+		}
+		/* Error / empty states */
+		.result-error {
+			color: #dc2626;
+			padding: 12px;
+			background: #fef2f2;
+			border-radius: 6px;
+			border-left: 4px solid #dc2626;
+		}
+		.result-empty {
+			color: #64748b;
+			font-style: italic;
+			padding: 20px;
+			text-align: center;
+		}
+
         body {
             font-family: 'Segoe UI', sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -585,7 +677,47 @@ Perfect for Field Day, contests, and emergency communications!</div>
             document.getElementById(tabName + '-tab').classList.add('active');
             event.target.classList.add('active');
         }
-        
+
+		function renderResult(resultOutput, rawText, duration) {
+			const lines = rawText.trim().split('\n').filter(l => l.trim() !== '');
+
+			if (lines.length < 2) {
+				resultOutput.innerHTML = `<div class="result-empty">No results found.</div>`;
+				return;
+			}
+
+			// ── 1 & 2. Parse headers and rows (output is tab-separated) ─────────────
+			const headers = lines[0].split('\t').map(h => h.trim());
+			const rows = [];
+			for (let i = 1; i < lines.length; i++) {
+				const cells = lines[i].split('\t').map(c => c.trim());
+				rows.push(cells);
+			}
+
+			// ── 3. Render table ───────────────────────────────────────────────────────
+			// Find which column index is "callsign" for special styling
+			const callsignIdx = headers.findIndex(h => /callsign/i.test(h));
+
+			let html = `<table class="result-table">
+			<thead><tr>${headers.map(h => `<th>${h}</th>`).join('')}</tr></thead>
+			<tbody>`;
+
+			for (const row of rows) {
+				html += '<tr>' + row.map((cell, i) => {
+					const cls = i === callsignIdx ? ' class="callsign-cell"' : '';
+					return `<td${cls}>${cell || '—'}</td>`;
+				}).join('') + '</tr>';
+			}
+
+			html += `</tbody></table>
+			<div class="result-meta">
+				<span class="badge">${rows.length} result${rows.length !== 1 ? 's' : ''}</span>
+				<span>⏱ Query completed in ${duration}ms</span>
+			</div>`;
+
+			resultOutput.innerHTML = html;
+		}
+
         async function performLookup(type) {
             const commandDisplay = document.getElementById('command-display');
             const resultOutput = document.getElementById('result-output');
@@ -629,9 +761,9 @@ Perfect for Field Day, contests, and emergency communications!</div>
                 resultOutput.classList.remove('loading');
                 
                 if (response.ok && result.trim()) {
-                    resultOutput.textContent = result + '\n\n📊 Query completed in ' + duration + 'ms';
+                    renderResult(resultOutput, result, duration);
                 } else {
-                    resultOutput.textContent = '❌ No results found in FCC database for: ' + input;
+                    resultOutput.innerHTML = `<div class="result-error">No results found in FCC database for: <strong>${input}</strong></div>`;
                 }
                 
                 commandDisplay.textContent = command + ' (completed in ' + duration + 'ms)';
